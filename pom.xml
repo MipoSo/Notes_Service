@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>org.wso2.msf4j</groupId>
+        <artifactId>msf4j-service</artifactId>
+        <version>2.7.7</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <name>polsourcenotesms</name>
+    <groupId>com.mipo</groupId>
+    <artifactId>polsourcenotesms</artifactId>
+
+    <properties>
+        <spring.version>4.2.0.RELEASE</spring.version>
+        <hibernate.version>4.3.2.Final</hibernate.version>
+        <netty.version>4.0.30.Final</netty.version>
+        <slf4j.version>1.7.5</slf4j.version>
+        <slf4j.log4j.version>1.6.0</slf4j.log4j.version>
+        <hsqldb.version>2.2.8</hsqldb.version> 
+        <gson.version>2.2.4</gson.version> 
+        <rs-api.version>2.0</rs-api.version> 
+    </properties>
+
+    <version>1.0-SNAPSHOT</version>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.2.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>4.2.0.RELEASE</version>
+            <type>jar</type>
+        </dependency> 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.48</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.msf4j</groupId>
+            <artifactId>msf4j-spring</artifactId>
+            <version>2.8.2-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+    </dependencies>
+    
+</project>
