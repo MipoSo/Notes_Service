@@ -29,6 +29,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * JPA annotated POJO class
@@ -49,11 +51,13 @@ public class Note{
     @Column
     private String content;
 
-    @Column
-    private String created;
+    @Column//(nullable = false)
+    @CreationTimestamp
+    private Date created;
 
-    @Column
-    private String modified;
+    @Column//(nullable = false)
+    @UpdateTimestamp
+    private Date modified;
 
     public Long getId() {
         return id;
@@ -79,19 +83,19 @@ public class Note{
         this.content = content;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
-    public String getModified() {
+    public Date getModified() {
         return modified;
     }
 
-    public void setModified(String modified) {
+    public void setModified(Date modified) {
         this.modified = modified;
     }
 
