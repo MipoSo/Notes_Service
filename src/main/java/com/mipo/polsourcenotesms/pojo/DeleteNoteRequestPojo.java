@@ -1,3 +1,5 @@
+package com.mipo.polsourcenotesms.pojo;
+
 /*
  * Copyright 2020 WSO2.
  *
@@ -13,35 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mipo.polsourcenotesms.pojo;
 
 /**
  *
  * @author mipo
  */
-public class CreateNoteResponsePojo {
-    private String status;
+public class DeleteNoteRequestPojo {
+    private String title;
 
-    private String statusCode;
-
-    public String getStatus() {
-        return status;
+    public String getTitle ()
+    {
+        return title;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    public void setStatusCode(String statusCode) {
-        this.statusCode = statusCode;
+    public void setTitle (String title)
+    {
+        this.title = title;
     }
 
     @Override
     public String toString() {
-        return "CreateNoteResponsePojo{" + "status=" + status + ", statusCode=" + statusCode + '}';
+        return "DeleteNoteRequestPojo{" + "title=" + title + '}';
     }
 }

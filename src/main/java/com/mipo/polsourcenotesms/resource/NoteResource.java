@@ -22,6 +22,11 @@ import org.springframework.stereotype.Component;
 import com.mipo.polsourcenotesms.dao.NoteRepository;
 import com.mipo.polsourcenotesms.model.Note;
 import com.mipo.polsourcenotesms.pojo.CreateNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.CreateNoteResponsePojo;
+import com.mipo.polsourcenotesms.pojo.DeleteNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.ReadNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.UpdateNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.UpdateNoteResponsePojo;
 
 import java.util.List;
 import java.util.Date;
@@ -51,52 +56,73 @@ public class NoteResource {//class name
     @Path("/readnote/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNoteById(@PathParam("id") long id) {
-        Note note = notes.findNote(id);
-        return Response.status(Response.Status.ACCEPTED).entity(note).build();
+        Note note = notes.findNotebyId(id);
+        return Response.status(Response.Status.OK).entity(note).build();
     }
     
-    @GET
-    @Path("/readnote/{title}")
+    @POST
+    @Path("/readnote")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNoteByTitle(@PathParam("title") String title) {
-        Note note = notes.findNote(title);
+    public Response getNoteByTitle(ReadNoteRequestPojo request) {
+        Note note = notes.findNote(request);
         return Response.status(Response.Status.ACCEPTED).entity(note).build();
     }
     
     @GET
+    @Path("/allnotes")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllNotes() {
         List<Note> allNotess = notes.findAllNotes();
-        return Response.status(Response.Status.ACCEPTED).entity(allNotess).build();
+        return Response.status(Response.Status.OK).entity(allNotess).build();
     }
 
     @POST
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNote(CreateNoteRequestPojo request) { 
-        Note note = new Note();
-        note.setTitle(request.getTitle());
-        note.setContent(request.getContent());
-        notes.addNote(note);
-        return Response.status(Response.Status.CREATED).build();
+        CreateNoteResponsePojo response = new CreateNoteResponsePojo();
+        try{
+            Note note = new Note();
+            note.setTitle(request.getTitle());
+            note.setContent(request.getContent());
+            notes.createNote(note);
+            response.setStatus("Note Created");
+            response.setStatusCode("00");
+            return Response.status(Response.Status.CREATED).build();
+        }
+        catch(Exception e)
+        {
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();            
+        }    
     }
     
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateNote(CreateNoteRequestPojo request) { 
-        Note note = new Note();
-        note.setTitle(request.getTitle());
-        note.setContent(request.getContent());
-        notes.addNote(note);
-        return Response.status(Response.Status.CREATED).build();
+    public Response updateNote(UpdateNoteRequestPojo request) { 
+        UpdateNoteResponsePojo response = new UpdateNoteResponsePojo();
+        try{
+            notes.updateNote(request);
+            response.setStatus("Note Updated");
+            response.setStatusCode("00");
+            return Response.status(Response.Status.OK).build();
+        }
+        catch(Exception e)
+        {
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @DELETE
-    @Path("/delete/{id}")
-    public Response deleteNote(@PathParam("id") long id) {
-        notes.removeNote(id);
-        return Response.status(Response.Status.ACCEPTED).build();
+    @DELETE    
+    @Path("/delete")    
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deleteNote(DeleteNoteRequestPojo request) {
+        notes.removeNote(request.getTitle());
+        return Response.status(Response.Status.OK).build();
     }
 
 

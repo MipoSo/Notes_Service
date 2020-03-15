@@ -19,7 +19,7 @@ package com.mipo.polsourcenotesms.pojo;
  *
  * @author mipo
  */
-public class CreateNoteResponsePojo {
+public class ReadNoteResponsePojo {
     private String status;
 
     private String statusCode;
