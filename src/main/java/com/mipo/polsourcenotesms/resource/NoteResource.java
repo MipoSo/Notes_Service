@@ -111,9 +111,9 @@ public class NoteResource {//class name
             return Response.status(Response.Status.OK).entity(response).build();            
         }
         catch(Exception e){
-            response.setStatus(e.getMessage());
+            response.setStatus("Not found");
             response.setStatusCode("01");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();            
+            return Response.status(Response.Status.NOT_FOUND).entity(response).build();            
         }
     }
     
