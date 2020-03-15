@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.mipo.polsourcenotesms.model.Note;
+import com.mipo.polsourcenotesms.pojo.DeleteNoteRequestPojo;
 import com.mipo.polsourcenotesms.pojo.ReadNoteRequestPojo;
 import com.mipo.polsourcenotesms.pojo.UpdateNoteRequestPojo;
 
@@ -35,6 +36,10 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
+import org.hibernate.envers.query.AuditQuery;
 
 /**
  * UserRepository class which is extended from AbstractRepository class.
@@ -76,14 +81,15 @@ public class NoteRepository {
         manager.close();
     }
     
-    public void removeNote(String title) {    
-        EntityManager manager = getEntityManager();    
+    public void removeNote(DeleteNoteRequestPojo request) {    
+        EntityManager manager = getEntityManager();
         CriteriaBuilder cb = manager.getCriteriaBuilder();
-        CriteriaDelete<Note> cd = cb.createCriteriaDelete(Note.class);
-        Root<Note> rootEntry = cd.from(Note.class);
-        cd.where(cb.equal(rootEntry.get("title"), title));
+        CriteriaQuery<Note> cq = cb.createQuery(Note.class);
+        Root<Note> rootEntry = cq.from(Note.class);
+        cq.select(rootEntry).where(cb.equal(rootEntry.get("title"), request.getTitle()));
+        Note noteresult = manager.createQuery(cq).getSingleResult();
         manager.getTransaction().begin();
-        manager.createQuery(cd).executeUpdate();
+        manager.remove(manager.find(Note.class, noteresult.getId()));
         manager.getTransaction().commit();
         manager.close();
     }
@@ -110,6 +116,15 @@ public class NoteRepository {
         CriteriaQuery<Note> all = cq.select(rootEntry);
         TypedQuery<Note> allQuery = getEntityManager().createQuery(all);
         return allQuery.getResultList();
+    }
+    
+    public List<Note> findAllHistory(long id) {
+        EntityManager manager = getEntityManager();
+        AuditReader ar = AuditReaderFactory.get(manager);
+        AuditQuery q = ar.createQuery().forRevisionsOfEntity(Note.class, true, true);
+        q.add(AuditEntity.id().eq(id));
+        List<Note> audit = q.getResultList();
+        return audit;
     }
 }
 //createRegistration

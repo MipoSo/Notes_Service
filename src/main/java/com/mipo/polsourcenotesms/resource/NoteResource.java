@@ -23,10 +23,15 @@ import com.mipo.polsourcenotesms.dao.NoteRepository;
 import com.mipo.polsourcenotesms.model.Note;
 import com.mipo.polsourcenotesms.pojo.CreateNoteRequestPojo;
 import com.mipo.polsourcenotesms.pojo.CreateNoteResponsePojo;
-import com.mipo.polsourcenotesms.pojo.DeleteNoteRequestPojo;
 import com.mipo.polsourcenotesms.pojo.ReadNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.ReadNoteResponsePojo;
 import com.mipo.polsourcenotesms.pojo.UpdateNoteRequestPojo;
 import com.mipo.polsourcenotesms.pojo.UpdateNoteResponsePojo;
+import com.mipo.polsourcenotesms.pojo.DeleteNoteRequestPojo;
+import com.mipo.polsourcenotesms.pojo.DeleteNoteResponsePojo;
+import com.mipo.polsourcenotesms.pojo.NotePojo;
+import com.mipo.polsourcenotesms.pojo.ReadAllNoteResponsePojo;
+import com.mipo.polsourcenotesms.pojo.ReadNoteHistoryResponsePojo;
 
 import java.util.List;
 import java.util.Date;
@@ -51,34 +56,94 @@ public class NoteResource {//class name
 
     @Autowired
     private NoteRepository notes;
-
-    @GET
-    @Path("/readnote/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getNoteById(@PathParam("id") long id) {
-        Note note = notes.findNotebyId(id);
-        return Response.status(Response.Status.OK).entity(note).build();
-    }
     
-    @POST
-    @Path("/readnote")
+    @GET
+    @Path("/history/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNoteByTitle(ReadNoteRequestPojo request) {
-        Note note = notes.findNote(request);
-        return Response.status(Response.Status.ACCEPTED).entity(note).build();
+    public Response getNoteHistory(@PathParam("id") long id) {
+        ReadNoteHistoryResponsePojo response = new ReadNoteHistoryResponsePojo();
+        try{
+            List<Note> allNotess = notes.findAllHistory(id);
+            response.setStatus("Success");
+            response.setStatusCode("00");
+            response.setNote(allNotess);
+            return Response.status(Response.Status.OK).entity(response).build();
+        }
+        catch(Exception e){
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();             
+        }
     }
     
     @GET
     @Path("/allnotes")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllNotes() {
-        List<Note> allNotess = notes.findAllNotes();
-        return Response.status(Response.Status.OK).entity(allNotess).build();
+        ReadAllNoteResponsePojo response = new ReadAllNoteResponsePojo();
+        try{
+            List<Note> allNotess = notes.findAllNotes();
+            response.setStatus("Success");
+            response.setStatusCode("00");
+            response.setNote(allNotess);
+            return Response.status(Response.Status.OK).entity(response).build();
+        }
+        catch(Exception e){
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();             
+        }
+    }
+
+    @GET
+    @Path("/readnote/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNoteById(@PathParam("id") long id) {
+        ReadNoteResponsePojo response = new ReadNoteResponsePojo();
+        try{
+            Note note = notes.findNotebyId(id);
+            NotePojo notep = new NotePojo();
+            notep.setTitle(note.getTitle());
+            notep.setContent(note.getContent());
+            response.setStatus("Success");
+            response.setStatusCode("00");
+            response.setNote(notep);
+            return Response.status(Response.Status.OK).entity(response).build();            
+        }
+        catch(Exception e){
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();            
+        }
+    }
+    
+    @POST
+    @Path("/readnote")    
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNoteByTitle(ReadNoteRequestPojo request) {
+        ReadNoteResponsePojo response = new ReadNoteResponsePojo();
+        try{
+            Note note = notes.findNote(request);
+            NotePojo notep = new NotePojo();
+            notep.setTitle(note.getTitle());
+            notep.setContent(note.getContent());
+            response.setStatus("Success");
+            response.setStatusCode("00");
+            response.setNote(notep);
+            return Response.status(Response.Status.OK).entity(response).build();            
+        }
+        catch(Exception e){
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();            
+        }
     }
 
     @POST
     @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)    
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createNote(CreateNoteRequestPojo request) { 
         CreateNoteResponsePojo response = new CreateNoteResponsePojo();
         try{
@@ -88,41 +153,53 @@ public class NoteResource {//class name
             notes.createNote(note);
             response.setStatus("Note Created");
             response.setStatusCode("00");
-            return Response.status(Response.Status.CREATED).build();
+            return Response.status(Response.Status.CREATED).entity(response).build();
         }
         catch(Exception e)
         {
             response.setStatus(e.getMessage());
             response.setStatusCode("01");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();            
         }    
     }
     
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response updateNote(UpdateNoteRequestPojo request) { 
         UpdateNoteResponsePojo response = new UpdateNoteResponsePojo();
         try{
             notes.updateNote(request);
             response.setStatus("Note Updated");
             response.setStatusCode("00");
-            return Response.status(Response.Status.OK).build();
+            return Response.status(Response.Status.OK).entity(response).build();
         }
         catch(Exception e)
         {
             response.setStatus(e.getMessage());
             response.setStatusCode("01");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
         }
     }
 
-    @DELETE    
+    @POST    
     @Path("/delete")    
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteNote(DeleteNoteRequestPojo request) {
-        notes.removeNote(request.getTitle());
-        return Response.status(Response.Status.OK).build();
+        DeleteNoteResponsePojo response = new DeleteNoteResponsePojo();
+        try{          
+            notes.removeNote(request);
+            response.setStatus("Deleted");
+            response.setStatusCode("00");
+            return Response.status(Response.Status.OK).entity(response).build();
+        }
+        catch(Exception e){
+            response.setStatus(e.getMessage());
+            response.setStatusCode("01");
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();            
+        }
     }
 
 

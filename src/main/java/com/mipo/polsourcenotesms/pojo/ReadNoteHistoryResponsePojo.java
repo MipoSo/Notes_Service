@@ -15,16 +15,19 @@
  */
 package com.mipo.polsourcenotesms.pojo;
 
+import com.mipo.polsourcenotesms.model.Note;
+import java.util.List;
+
 /**
  *
  * @author mipo
  */
-public class ReadNoteResponsePojo {
+public class ReadNoteHistoryResponsePojo {
     private String status;
 
     private String statusCode;
     
-    private NotePojo note;
+    private List<Note> note;
 
     public String getStatus() {
         return status;
@@ -42,18 +45,19 @@ public class ReadNoteResponsePojo {
         this.statusCode = statusCode;
     }
 
-    public NotePojo getNote() {
+    public List<Note> getNote() {
         return note;
     }
 
-    public void setNote(NotePojo note) {
+    public void setNote(List<Note> note) {
         this.note = note;
     }
 
     @Override
     public String toString() {
-        return "ReadNoteResponsePojo{" + "status=" + status + ", statusCode=" + statusCode + ", note=" + note + '}';
+        return "ReadAllNoteResponsePojo{" + "status=" + status + ", statusCode=" + statusCode + ", note=" + note + '}';
     }
 
+    
     
 }

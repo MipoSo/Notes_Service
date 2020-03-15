@@ -31,12 +31,14 @@ import javax.persistence.Table;
 import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.envers.Audited;
 
 /**
  * JPA annotated POJO class
  */
 
 @Entity
+@Audited
 @Table(name = "notes")
 @Proxy(lazy = false)
 public class Note{
@@ -58,7 +60,7 @@ public class Note{
     @Column//(nullable = false)
     @UpdateTimestamp
     private Date modified;
-
+    
     public Long getId() {
         return id;
     }

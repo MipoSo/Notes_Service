@@ -12,7 +12,7 @@ mvn clean install
 
 From the target directory, run
 ```
-java -jar target/jpa-book-catalog-1.0.0.jar
+java -jar target/polsourcenotesms-1.0-SNAPSHOT.jar
 ```
 
 ## How to test the sample
@@ -20,14 +20,24 @@ java -jar target/jpa-book-catalog-1.0.0.jar
 We will use the cURL command line tool for testing. You can use your preferred HTTP or REST client too.
 
 
-1.) Adding two new book to the catalog 
+1.) Adding two new notes to the catalog 
 
 ``` 
-curl -v -H "Content-Type: application/json" -X POST -d '{"name":"Java","author":"SUN"}' http://localhost:8080/catalog
+curl --location --request POST 'http://localhost:8080/notes/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title" : "fifth",
+	"content" : "This is my fifth note"
+}'
 ```
 
 ```
-curl -v -H "Content-Type: application/json" -X POST -d '{"name":"Java","author":"WSO2"}' http://localhost:8080/catalog
+curl --location --request POST 'http://localhost:8080/notes/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title" : "third",
+	"content" : "This is my third note"
+}'
 ```
 
 You should able to see following output. 
