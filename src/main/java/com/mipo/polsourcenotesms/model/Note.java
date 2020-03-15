@@ -45,10 +45,10 @@ public class Note{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
+    @Column (nullable = false)
     private String title;
 
-    @Column
+    @Column (nullable = false)
     private String content;
 
     @Column//(nullable = false)

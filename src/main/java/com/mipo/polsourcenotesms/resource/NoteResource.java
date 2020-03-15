@@ -74,14 +74,9 @@ public class NoteResource {//class name
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNote(CreateNoteRequestPojo request) { 
-        //Date dt = new Date();
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //String currentTime = sdf.format(dt);
         Note note = new Note();
         note.setTitle(request.getTitle());
         note.setContent(request.getContent());
-        //note.setCreated(currentTime);
-        //note.setCreated(currentTime);
         notes.addNote(note);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -90,14 +85,9 @@ public class NoteResource {//class name
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateNote(CreateNoteRequestPojo request) { 
-        //Date dt = new Date();
-        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //String currentTime = sdf.format(dt);
         Note note = new Note();
         note.setTitle(request.getTitle());
         note.setContent(request.getContent());
-        //note.setCreated(currentTime);
-        //note.setCreated(currentTime);
         notes.addNote(note);
         return Response.status(Response.Status.CREATED).build();
     }
