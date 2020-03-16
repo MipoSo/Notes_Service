@@ -1,5 +1,5 @@
 # Requirements to run the project
-This is a maven project built with JDK 1.8 and wso2/msf4j microservice framework.
+This is a maven project built with JDK 1.8 and [wso2/msf4j microservice framework.](https://github.com/wso2/msf4j)
 
 [application.properties](https://github.com/MipoShow/Notes_Service/tree/master/src/main/resources) file should be updated with desired MySQL database information like database url, username and password.
 
