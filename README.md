@@ -3,6 +3,8 @@ This is a maven project built with JDK 1.8 and [wso2/msf4j microservice framewor
 
 [application.properties](https://github.com/MipoShow/Notes_Service/tree/master/src/main/resources) file should be updated with desired MySQL database information like database url, username and password.
 
+Java 8, MySQL database are required to run it.
+
 ## SQL Statement to create database
 
 ```
