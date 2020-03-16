@@ -24,7 +24,7 @@ mvn clean install
 
 From the target directory, run
 ```
-java -jar target/polsourcenotesms-1.0-SNAPSHOT.jar
+java -jar target/polsourcenotesms-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
 ## How to test the service
